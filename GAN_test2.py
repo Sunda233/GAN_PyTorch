@@ -105,6 +105,7 @@ class Discriminator(nn.Module):
 # 初始化模型，优化器及损失计算函数
 # 设备的配置
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print("using cuda:", torch.cuda.get_device_name(0))
 # 初始化生成器和判别器把他们放到相应的设备上
 gen = Generator().to(device)
 dis = Discriminator().to(device)
@@ -138,7 +139,7 @@ test_input = torch.randn(16, 100, device=device)  # 16个长度为100的随机�
 D_loss = []
 G_loss = []
 # 训练循环
-for epoch in range(100):
+for epoch in range(20):
     # 初始化损失值
     d_epoch_loss = 0
     g_epoch_loss = 0
@@ -195,10 +196,10 @@ for epoch in range(100):
         D_loss.append(d_epoch_loss)
         G_loss.append(g_epoch_loss)
         print('Epoch:', epoch)
-        print("判别器损失1:", d_loss)
-        print("判别器损失2:", d_epoch_loss)  # 不变？
-        print("生成器损失1:", g_loss)
-        print("生成器损失2:", g_epoch_loss)  # 不变？
+        # print("本次判别器损失:", d_loss)
+        print("当前判别器平均损失:", d_epoch_loss)
+        # print("本次生成器损失:", g_loss)
+        print("当前生成器平均损失:", g_epoch_loss)
         plt.close()  # # 关闭上一个窗口
         gen_img_plot(gen, test_input)  # 绘图函数
 plt.show()  # # 最后保存图像
