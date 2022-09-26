@@ -119,7 +119,7 @@ class Generator(nn.Module):
 
         # define neural network layers
         self.model = nn.Sequential(
-            nn.Linear(1, 200),
+            nn.Linear(100, 200),
             nn.LeakyReLU(0.02),
             nn.LayerNorm(200),
             nn.Linear(200, 784),
@@ -179,9 +179,9 @@ for epoch in range(epochs):
         # 用真实图片训练判别器
         D.train(image_data_tensor, torch.FloatTensor([1.0]))
         # 用生成器的虚假图片训练判别器
-        D.train(G.forward(generate_random_seed(1)).detach(), torch.FloatTensor([0.0]))
+        D.train(G.forward(generate_random_seed(100)).detach(), torch.FloatTensor([0.0]))
         # 训练生成器
-        G.train(D, generate_random_seed(1), torch.FloatTensor([1.0]))
+        G.train(D, generate_random_seed(100), torch.FloatTensor([1.0]))
         pass
     pass
 
@@ -193,7 +193,7 @@ G.plot_progress()
 f, axarr = plt.subplots(2,3, figsize=(16,8))
 for i in range(2):
     for j in range(3):
-        output = G.forward(generate_random_seed(1))
+        output = G.forward(generate_random_seed(100))
         img = output.detach().numpy().reshape(28,28)
         axarr[i,j].imshow(img, interpolation='none', cmap='Blues')
         pass
